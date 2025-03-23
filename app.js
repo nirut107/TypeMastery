@@ -103,7 +103,7 @@ const Start = () => {
   </select>
   <button class="button" id="startButton">เริ่มเกม</button>
 </div>
-`
+`;
   }
   return `<div class="start"
   <label for="timeSelector" class="button">Selector time (sec):</label>
@@ -120,10 +120,17 @@ const Start = () => {
 };
 
 const Stat = () => {
+  if (language == "Thai") {
+    return `<div class="stat-box">
+  <div class="stat-label">คำที่พิมพ์ได้ : ${countWord}</div> <!-- Words Typed -->
+  <div class="stat-label">คำที่พลาด : ${countWrong}</div> <!-- Missed Words -->
+  <div class="stat-label"><span>เวลา : </span><span class="time ${activeTime}">${countdownTime}</span></div>
+</div>`;
+  }
   return `
           <div class="stat-box">
-            <div class="stat-label">Count ${countWord}</div>
-            <div class="stat-label">Miss ${countWrong}</div>
+            <div class="stat-label">Successful Words : ${countWord}</div>
+            <div class="stat-label">Miss : ${countWrong}</div>
             <div class="stat-label"><span>Time : </span><span class="time ${activeTime}">${countdownTime}</span></div>
           </div>`;
 };
