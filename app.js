@@ -31,7 +31,21 @@ export function useState(initialValue) {
 
 let language = "English";
 document.title = "Typing Practice";
-
+const thaiProblemChars = [
+  "ุ",
+  "ู",
+  "ิ",
+  "ี",
+  "ึ",
+  "ื",
+  "็",
+  "่",
+  "้",
+  "๊",
+  "๋",
+  "ั",
+  "์",
+];
 
 function getRandomWord() {
   if (language == "Thai") {
@@ -45,11 +59,12 @@ function getRandomWord() {
 let text1 = getRandomWord();
 let text2 = getRandomWord();
 let textCorrect = "";
+let lastCorrect = "";
 let textError = "";
+let temp_corret;
 
 let keyLow = engRowLower;
 let keyUp = engRowUpper;
-
 
 let activeU = [];
 let activeL = [];
@@ -57,7 +72,7 @@ let activeL = [];
 const Text = () => {
   return `<div class="word-display">
           <div class="word-display">
-            <div id="currentWord" class="current-word"><span class="highlight-correct">${textCorrect}</span>&#x200B;<span class="highlight-incorrect">${textError}</span><span class="word-play">${text1}</span></div>
+            <div id="currentWord" class="current-word"><span class="highlight-correct">${textCorrect}</span><span class="highlight-correct1">${lastCorrect}</span>&#x200B;<span class="highlight-incorrect">${textError}</span><span class="word-play">${text1}</span></div>
             <div id="next-Word" class="next-Word">next: ${text2}</div>
           </div>
           </div>`;
@@ -310,11 +325,10 @@ document.addEventListener("keydown", (event) => {
     activeL[41] = "active";
     activeL[52] = "active";
     activeU[keyNames.indexOf(event.code.toLowerCase())] = "active";
-  }
-  else {
+  } else {
     activeL[keyNames.indexOf(event.code.toLowerCase())] = "active";
   }
-  
+
   update();
   if (textError != "") {
     text1 = textError + text1;
@@ -324,8 +338,14 @@ document.addEventListener("keydown", (event) => {
   if (event.shiftKey) {
     if (event.key != "Shift" && textError == "") {
       if (keyUp[keyNames.indexOf(event.code.toLowerCase())] == text1[0]) {
-        textCorrect += text1[0];
+        temp_corret = text1[0];
         text1 = text1.slice(1);
+        if (thaiProblemChars.includes(text1[0])) {
+          lastCorrect = lastCorrect + temp_corret;
+        } else {
+          textCorrect += lastCorrect + temp_corret;
+          lastCorrect = "";
+        }
         update();
       } else {
         let temp = text1;
@@ -336,14 +356,20 @@ document.addEventListener("keydown", (event) => {
           text1 = temp;
           textError = "";
           update();
-        }, 10);
+        }, 5);
       }
     } else if (event.key == "Backspace") {
     }
   } else if (textError == "") {
     if (keyLow[keyNames.indexOf(event.code.toLowerCase())] == text1[0]) {
-      textCorrect += text1[0];
+      temp_corret = text1[0];
       text1 = text1.slice(1);
+      if (thaiProblemChars.includes(text1[0])) {
+        lastCorrect = lastCorrect + temp_corret;
+      } else {
+        textCorrect += lastCorrect + temp_corret;
+        lastCorrect = "";
+      }
       update();
     } else {
       let temp = text1;
@@ -354,7 +380,7 @@ document.addEventListener("keydown", (event) => {
         text1 = temp;
         textError = "";
         update();
-      }, 10);
+      }, 5);
     }
   }
 
