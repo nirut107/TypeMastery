@@ -49,7 +49,7 @@ const thaiProblemChars = [
 
 function getRandomWord() {
   if (language == "Thai") {
-    return thaiWords[Math.floor(Math.random() * words.length)];
+    return thaiWords[Math.floor(Math.random() * thaiWords.length)];
   }
   if (language == "English") {
     return words[Math.floor(Math.random() * words.length)];
