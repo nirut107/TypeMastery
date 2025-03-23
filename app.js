@@ -328,8 +328,17 @@ document.addEventListener("keydown", (event) => {
   } else {
     activeL[keyNames.indexOf(event.code.toLowerCase())] = "active";
   }
-
   update();
+
+  if (
+    event.key == "Enter" ||
+    event.key == "Tab" ||
+    event.key == "CapsLock" ||
+    event.key == Backspace
+  ) {
+    event.preventDefault();
+    return;
+  }
   if (textError != "") {
     text1 = textError + text1;
     textError = "";
