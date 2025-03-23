@@ -47,12 +47,25 @@ const thaiProblemChars = [
   "์",
 ];
 
+let randowWord;
 function getRandomWord() {
   if (language == "Thai") {
-    return thaiWords[Math.floor(Math.random() * thaiWords.length)];
+    randowWord = "";
+    while (!randowWord || randowWord == "") {
+      randowWord = thaiWords[Math.floor(Math.random() * thaiWords.length)];
+      if (randowWord) {
+        return randowWord;
+      }
+    }
   }
   if (language == "English") {
-    return words[Math.floor(Math.random() * words.length)];
+    randowWord = "";
+    while (!randowWord || randowWord == "") {
+      randowWord = words[Math.floor(Math.random() * words.length)];
+      if (randowWord) {
+        return randowWord;
+      }
+    }
   }
 }
 
@@ -60,7 +73,7 @@ let text1 = getRandomWord();
 let text2 = getRandomWord();
 let textCorrect = "";
 let lastCorrect = "";
-let textError = "";
+let errorActive = "";
 let temp_corret;
 
 let keyLow = engRowLower;
@@ -68,18 +81,81 @@ let keyUp = engRowUpper;
 
 let activeU = [];
 let activeL = [];
+let countWord = 0;
+let countWrong = 0;
+let countdownTime = 12;
+let activeTime = "";
+let gameTime = 15;
 
-const Text = () => {
-  return `<div class="word-display">
-          <div class="word-display">
-            <div id="currentWord" class="current-word"><span class="highlight-correct">${textCorrect}</span><span class="highlight-correct1">${lastCorrect}</span>&#x200B;<span class="highlight-incorrect">${textError}</span><span class="word-play">${text1}</span></div>
-            <div id="next-Word" class="next-Word">next: ${text2}</div>
-          </div>
+let state = 0;
+
+const Start = () => {
+  return `<div class="start"
+  <label for="timeSelector" class="button">Selector time (sec):</label>
+<select id="timeSelector" class="selecttime">
+  <option value="30">30 sec</option>
+  <option value="60">60 sec</option>
+  <option value="90">90 sec</option>
+  <option value="120">120 sec</option>
+  <option value="150">150 sec</option>
+  <option value="180">180 sec</option>
+</select>
+            <button class="button" id="startButton">start</button>
           </div>`;
 };
 
+const Stat = () => {
+  return `
+          <div class="stat-box">
+            <div class="stat-label">Count ${countWord}</div>
+            <div class="stat-label">Miss ${countWrong}</div>
+            <div class="stat-label"><span>Time : </span><span class="time ${activeTime}">${countdownTime}</span></div>
+          </div>`;
+};
+
+const Text = () => {
+  return `
+          <div class="word-display">
+            <div id="currentWord" class="current-word"><span class="highlight-correct">${textCorrect}</span><span class="highlight-correct1">${lastCorrect}</span>&#x200B;<span class="word-play ${errorActive}">${text1}</span></div>
+            <div id="next-Word" class="next-Word">next: ${text2}</div>
+          </div>
+        `;
+};
+
+const End = () => {
+  if (language == "Thai") {
+    return `<div class="end">
+            <h1>อักขระต่อนาที (CPM)</h1>
+           <h3>${Math.round((countWord * 60) / gameTime) || 0}</h3>
+           <h1>ความแม่นยำ (%) </h1>
+           <h3>${
+             Math.round((countWord / (countWord + countWrong)) * 100) || 0
+           } %</h3>
+           <h1>การคำนวณคะแนน</h1>
+           <h3>${(
+             ((countWord * 60) / gameTime) *
+             (countWord / (countWord + countWrong) || 0)
+           ).toFixed(2)}</h3>
+         </div>`;
+  }
+  return `<div class="end">
+            <h1>Characters Per Minute (CPM)</h1>
+           <h3>${Math.round((countWord * 60) / gameTime) || 0}</h3>
+           <h1>Accuracy (%)</h1>
+           <h3>${
+             Math.round((countWord / (countWord + countWrong)) * 100) || 0
+           } %</h3>
+           <h1>Score Calculation</h1>
+           <h3>${(
+             ((countWord * 60) / gameTime) *
+             (countWord / (countWord + countWrong) || 0)
+           ).toFixed(2)}</h3>
+         </div>`;
+};
+
 const key = () => {
-  return `<div class="keyboard-row">
+  return `<div class="keyboard">
+  <div class="keyboard-row">
   <div class="key key-1 ${activeU[0]} ${activeL[0]}" data-key="backquote">
     <span class="key-upper ${activeU[0]}">${keyUp[0]}</span>
     <span class="key-lower ${activeL[0]}">${keyLow[0]}</span>
@@ -303,7 +379,7 @@ const key = () => {
     <span class="function-key ${activeL[53]}">${keyUp[53]}</span>
   </div>
 </div>
-
+</div>
           `;
 };
 
@@ -339,13 +415,9 @@ document.addEventListener("keydown", (event) => {
     event.preventDefault();
     return;
   }
-  if (textError != "") {
-    text1 = textError + text1;
-    textError = "";
-  }
 
   if (event.shiftKey) {
-    if (event.key != "Shift" && textError == "") {
+    if (event.key != "Shift") {
       if (keyUp[keyNames.indexOf(event.code.toLowerCase())] == text1[0]) {
         temp_corret = text1[0];
         text1 = text1.slice(1);
@@ -355,51 +427,44 @@ document.addEventListener("keydown", (event) => {
           textCorrect += lastCorrect + temp_corret;
           lastCorrect = "";
         }
+        countWord += 1;
         update();
       } else {
-        let temp = text1;
-        textError = text1[0];
-        text1 = text1.slice(1);
-        update();
+        errorActive = "active";
+        countWrong += 1;
         setTimeout(() => {
-          text1 = temp;
-          textError = "";
-          update();
-        }, 5);
+          errorActive = "";
+        }, 100);
       }
-    } else if (event.key == "Backspace") {
     }
-  } else if (textError == "") {
-    if (keyLow[keyNames.indexOf(event.code.toLowerCase())] == text1[0]) {
-      temp_corret = text1[0];
-      text1 = text1.slice(1);
-      if (thaiProblemChars.includes(text1[0])) {
-        lastCorrect = lastCorrect + temp_corret;
-      } else {
-        textCorrect += lastCorrect + temp_corret;
-        lastCorrect = "";
-      }
-      update();
+  } else if (keyLow[keyNames.indexOf(event.code.toLowerCase())] == text1[0]) {
+    temp_corret = text1[0];
+    text1 = text1.slice(1);
+    if (thaiProblemChars.includes(text1[0])) {
+      lastCorrect = lastCorrect + temp_corret;
     } else {
-      let temp = text1;
-      textError = text1[0];
-      text1 = text1.slice(1);
-      update();
-      setTimeout(() => {
-        text1 = temp;
-        textError = "";
-        update();
-      }, 5);
+      textCorrect += lastCorrect + temp_corret;
+      lastCorrect = "";
     }
+    countWord += 1;
+    update();
+  } else {
+    errorActive = "active";
+    countWrong += 1;
+    setTimeout(() => {
+      errorActive = "";
+      update();
+    }, 300);
   }
 
-  if (text1 == "" && textError == "") {
+  if (text1 == "") {
     text1 = "";
     text1 = text2;
     text2 = getRandomWord();
     textCorrect = "";
     update();
   }
+  console.log(textCorrect, lastCorrect, text1, text2);
 });
 
 document.addEventListener("keyup", (event) => {
@@ -411,10 +476,66 @@ document.addEventListener("keyup", (event) => {
 });
 
 function update() {
-  const rootElement = document.getElementById("keyshow");
-  rootElement.innerHTML = key();
-  const TextElement = document.getElementById("Text");
-  TextElement.innerHTML = Text();
+  if (state == 0 || state == 2) {
+    const TextElement = document.getElementById("start");
+    TextElement.innerHTML = Start();
+    const timeSelector = document.getElementById("timeSelector");
+
+    const button = document.getElementById("startButton");
+    if (button) {
+      button.addEventListener("click", () => {
+        const TextElement = document.getElementById("start");
+        TextElement.innerHTML = "<div></div>";
+        gameTime = parseInt(timeSelector.value, 10);
+        text1 = getRandomWord();
+        text2 = getRandomWord();
+        textCorrect = "";
+        lastCorrect = "";
+        errorActive = "";
+        temp_corret;
+
+        activeU = [];
+        activeL = [];
+        countWord = 0;
+        countWrong = 0;
+        countdownTime = gameTime;
+        activeTime = "";
+        state = 1;
+        let countdownInterval = setInterval(function () {
+          if (state == 1) {
+            const statElement = document.getElementById("stat");
+            statElement.innerHTML = Stat();
+          }
+
+          countdownTime--;
+          if (countdownTime < 0) {
+            clearInterval(countdownInterval);
+            state = 2;
+            update();
+          }
+          if (countdownTime < 10) {
+            activeTime = "active";
+          }
+        }, 1000);
+        update();
+      });
+    }
+  } else if (state == 1) {
+    const statElement = document.getElementById("stat");
+    statElement.innerHTML = Stat();
+    const TextElement = document.getElementById("Text");
+    TextElement.innerHTML = Text();
+    const rootElement = document.getElementById("keyshow");
+    rootElement.innerHTML = key();
+  }
+  if (state == 2) {
+    const statElement = document.getElementById("stat");
+    statElement.innerHTML = End();
+    const TextElement = document.getElementById("Text");
+    TextElement.innerHTML = "<div></div>";
+    const rootElement = document.getElementById("keyshow");
+    rootElement.innerHTML = "<div></div>";
+  }
 }
 
 document
@@ -433,7 +554,6 @@ document
     text1 = getRandomWord();
     text2 = getRandomWord();
     textCorrect = "";
-    textError = "";
     changeTitle();
     update();
   });
