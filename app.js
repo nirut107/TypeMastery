@@ -296,7 +296,7 @@ const key = () => {
 function changeTitle() {
   if (language == "Thai") {
     document.title = "โปรแกมฝึกการพิมพ์";
-    document.querySelector('h1').textContent  = "โปรแกมฝึกการพิมพ์";
+    document.querySelector('h1').textContent  = "โปรแกรมฝึกการพิมพ์";
   }
   if (language == "English") {
     document.title = "Typing Practice";
