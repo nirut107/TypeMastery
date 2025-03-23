@@ -356,6 +356,7 @@ document.addEventListener("keydown", (event) => {
     textCorrect = "";
     update();
   }
+  console.log(textCorrect,textError,text1)
 });
 
 document.addEventListener("keyup", (event) => {
