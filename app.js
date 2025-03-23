@@ -58,7 +58,7 @@ console.log(count);
 const Text = () => {
   return `<div class="word-display">
           <div class="word-display">
-            <div id="currentWord" class="current-word"><span class="highlight-correct">${textCorrect}</span><span class="highlight-incorrect">${textError}</span>${text1}</div>
+            <div id="currentWord" class="current-word"><span class="highlight-correct">${textCorrect}</span><span class="highlight-incorrect">${textError}</span><span class="word-play">${text1}</span></div>
             <div id="next-Word" class="next-Word">next: ${text2}</div>
           </div>
           </div>`;
