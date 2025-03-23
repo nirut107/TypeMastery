@@ -334,7 +334,7 @@ document.addEventListener("keydown", (event) => {
     event.key == "Enter" ||
     event.key == "Tab" ||
     event.key == "CapsLock" ||
-    event.key == Backspace
+    event.key == "Backspace"
   ) {
     event.preventDefault();
     return;
