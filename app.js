@@ -31,11 +31,13 @@ export function useState(initialValue) {
 
 let language = "English";
 
+
 function getRandomWord() {
   if (language == "Thai") {
     return thaiWords[Math.floor(Math.random() * words.length)];
   }
   if (language == "English") {
+    console.log(words[Math.floor(Math.random() * words.length)])
     return words[Math.floor(Math.random() * words.length)];
   }
 }
@@ -48,12 +50,13 @@ let textError = "";
 let keyLow = engRowLower;
 let keyUp = engRowUpper;
 
+
 let active = [];
 
 const Text = () => {
   return `<div class="word-display">
           <div class="word-display">
-            <div id="currentWord" class="current-word"><span class="highlight-correct">${textCorrect}</span><span class="highlight-incorrect">${textError}</span><span class="word-play">${text1}</span></div>
+            <div id="currentWord" class="current-word"><span class="highlight-correct">${textCorrect}</span>&#x200B;<span class="highlight-incorrect">${textError}</span><span class="word-play">${text1}</span></div>
             <div id="next-Word" class="next-Word">next: ${text2}</div>
           </div>
           </div>`;
@@ -309,6 +312,7 @@ document.addEventListener("keydown", (event) => {
     textError = "";
   }
 
+  console.log(text1[0].charCodeAt(0) === 8203)
   if (event.shiftKey) {
     if (event.key != "Shift" && textError == "") {
       if (keyUp[keyNames.indexOf(event.code.toLowerCase())] == text1[0]) {
