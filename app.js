@@ -293,7 +293,7 @@ const key = () => {
 
 function changeTitle() {
   if (language == "Thai") {
-    document.title = "โปรแกมฝึกการพิมพ์";
+    document.title = "โปรแกรมฝึกการพิมพ์";
     document.querySelector("h1").textContent = "โปรแกรมฝึกการพิมพ์";
   }
   if (language == "English") {
