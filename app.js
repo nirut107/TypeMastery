@@ -90,6 +90,21 @@ let gameTime = 15;
 let state = 0;
 
 const Start = () => {
+  if (language == "Thai") {
+    return `<div class="start">
+  <label for="timeSelector" class="button">เลือกเวลา (วินาที):</label>
+  <select id="timeSelector" class="selecttime">
+    <option value="30">30 วินาที</option>
+    <option value="60">60 วินาที</option>
+    <option value="90">90 วินาที</option>
+    <option value="120">120 วินาที</option>
+    <option value="150">150 วินาที</option>
+    <option value="180">180 วินาที</option>
+  </select>
+  <button class="button" id="startButton">เริ่มเกม</button>
+</div>
+`
+  }
   return `<div class="start"
   <label for="timeSelector" class="button">Selector time (sec):</label>
 <select id="timeSelector" class="selecttime">
