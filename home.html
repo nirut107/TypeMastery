@@ -39,7 +39,8 @@
             text-align: center;
             margin-bottom: 20px;
           }
-          .stats {
+         
+          .stat-box {
             display: flex;
             justify-content: space-around;
             margin-bottom: 20px;
@@ -47,17 +48,18 @@
             padding: 10px;
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-          }
-          .stat-box {
             text-align: center;
           }
-          .stat-value {
-            font-size: 24px;
-            font-weight: bold;
-          }
+
           .stat-label {
-            font-size: 14px;
+            margin: 20px;
+            width: 100%;
+            font-size: 24px;
             color: #666;
+          }
+          .key:active,
+          .time.active {
+            color: red;
           }
           .word-display {
             background-color: white;
@@ -184,25 +186,66 @@
             height: 100px;
           }
           .language-selector {
+            font-size: 24px;
             margin-top: 20px;
             padding: 10px;
             border-radius: 5px;
-            border: 1px solid #ddd;
+            border: 1px solid #1c1b1b;
             cursor: pointer;
           }
           .highlight-correct {
             position: relative;
-            color: green;
+            color: rgb(108, 251, 108);
           }
           .highlight-correct1 {
             position: relative;
-            color: green;
+            color: rgb(108, 251, 108);
           }
-          .highlight-incorrect {
+          .key:active,
+          .word-play.active {
             color: red;
           }
           .function-key {
             font-size: 14px;
+          }
+          .start {
+            flex-direction: column;
+            background-color: white;
+            padding: 20px;
+            font-size: 24px;
+            min-height: 100px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #666;
+            margin-bottom: 20px;
+          }
+          .button {
+            margin-top: 10px;
+            font-size: 24px;
+            
+          }
+          .selecttime {
+            font-size: 20px;
+            margin: 5px;
+            padding: 3px;
+          }
+          .end {
+            flex-direction: column;
+            background-color: white;
+            padding: 20px;
+            font-size: 24px;
+            min-height: 100px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: #666;
           }
           @keyframes blink {
             0%,
@@ -225,10 +268,10 @@
               <option value="th">ไทย</option>
             </select>
           </div>
-
+          <div id="start"></div>
+          <div id="stat"></div>
           <div id="Text"></div>
-
-          <div id="keyshow" class="keyboard"></div>
+          <div id="keyshow"></div>
         </div>
         <script type="module" src="app.js"></script>
       </body>
