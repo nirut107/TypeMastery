@@ -30,6 +30,7 @@ export function useState(initialValue) {
 }
 
 let language = "English";
+document.title = "Typing Practice";
 
 
 function getRandomWord() {
