@@ -38,7 +38,6 @@ function getRandomWord() {
     return thaiWords[Math.floor(Math.random() * words.length)];
   }
   if (language == "English") {
-    console.log(words[Math.floor(Math.random() * words.length)])
     return words[Math.floor(Math.random() * words.length)];
   }
 }
@@ -322,7 +321,6 @@ document.addEventListener("keydown", (event) => {
     textError = "";
   }
 
-  console.log(text1[0].charCodeAt(0) === 8203)
   if (event.shiftKey) {
     if (event.key != "Shift" && textError == "") {
       if (keyUp[keyNames.indexOf(event.code.toLowerCase())] == text1[0]) {
