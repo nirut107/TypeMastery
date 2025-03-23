@@ -72,9 +72,6 @@
             justify-content: center;
             color: #666;
           }
-          .word-play {
-            color: #666;
-          }
           .current-word {
             font-size: 32px;
             margin-bottom: 10px;
@@ -143,6 +140,30 @@
             right: 4px;
             color: #666;
           }
+          .neon-text {
+            font-size: 32px;
+            font-weight: 10;
+            font-family: "Arial", sans-serif;
+            color: rgb(2, 13, 13);
+          }
+          .word-play {
+            color: #666;
+          }
+
+          .highlight-correct::after {
+            content: "_";
+            position: absolute;
+            top: 3px;
+            color: rgb(0, 0, 0);
+            animation: blink 1s infinite;
+          }
+
+          @keyframes blink {
+            50% {
+              opacity: 0;
+            }
+          }
+
           .key-lower {
             font-size: 36px;
           }
@@ -170,6 +191,11 @@
             cursor: pointer;
           }
           .highlight-correct {
+            position: relative;
+            color: green;
+          }
+          .highlight-correct1 {
+            position: relative;
             color: green;
           }
           .highlight-incorrect {
@@ -177,6 +203,15 @@
           }
           .function-key {
             font-size: 14px;
+          }
+          @keyframes blink {
+            0%,
+            100% {
+              opacity: 1;
+            }
+            50% {
+              opacity: 0;
+            }
           }
         </style>
       </head>
